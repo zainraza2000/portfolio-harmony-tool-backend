@@ -12,6 +12,7 @@ export async function apiKeyMiddleware(
   if (skipRoutes.includes(request.url)) {
     return;
   }
+  console.log("AAAAAAAAAA", request.headers);
 
   const apiKey =
     request.headers[headerName] ||
@@ -27,7 +28,7 @@ export async function apiKeyMiddleware(
   if(apiKey !== process.env.API_KEY) {
     return reply.status(401).send({
       error: "Unauthorized",
-      message: `Invalid API key`,
+      message: `Invalid API key`, 
     });
   }
 }
