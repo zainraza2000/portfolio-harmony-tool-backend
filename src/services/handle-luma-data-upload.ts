@@ -1,6 +1,6 @@
-import { mapBulkImportToRawData } from "helpers/mapper";
-import { ApiResponse, BulkImport, RawLumaData } from "helpers/types";
-import { supabase } from "integrations/supabase/supabase";
+import { mapBulkImportToRawData } from "../helpers/mapper.js";
+import { ApiResponse, BulkImport, RawLumaData } from "../helpers/types.js";
+import { supabase } from "../integrations/supabase/supabase.js";
 import * as XLSX from "xlsx";
 
 async function getFileBuffer(filePath: string) {
@@ -35,18 +35,22 @@ async function insertInBatches(data: RawLumaData[], batchSize = BATCH_SIZE) {
   return results;
 }
 
-export async function handleLumaDataUpload(filePath: string): Promise<ApiResponse> {
+export async function handleLumaDataUpload(
+  filePath: string
+): Promise<ApiResponse> {
   try {
-    const { error: truncateError  } = await supabase.rpc('truncate_raw_luma_data');
-      if (truncateError) {
-        console.log(
-          `Error truncating raw luma data. ${JSON.stringify(truncateError)}`
-        );
-        return {
-          success: false,
-          message: `Error truncating raw luma data`,
-        };
-      }
+    const { error: truncateError } = await supabase.rpc(
+      "truncate_raw_luma_data"
+    );
+    if (truncateError) {
+      console.log(
+        `Error truncating raw luma data. ${JSON.stringify(truncateError)}`
+      );
+      return {
+        success: false,
+        message: `Error truncating raw luma data`,
+      };
+    }
     let fileBuffer = await getFileBuffer(filePath);
     if (!fileBuffer) return { success: false, message: "File not found" };
     const workbook = XLSX.read(fileBuffer, { type: "array" });

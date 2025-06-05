@@ -1,8 +1,8 @@
 import { Type, Static } from "@sinclair/typebox";
 import { FastifyPluginAsync } from "fastify";
-import { buildResponse } from "helpers/utils";
-import { HandleLumaDataUpload } from "schemas/handle-luma-data";
-import { handleLumaDataUpload } from "services/handle-luma-data-upload";
+import { buildResponse } from "../helpers/utils.js";
+import { HandleLumaDataUpload } from "../schemas/handle-luma-data.js";
+import { handleLumaDataUpload } from "../services/handle-luma-data-upload.js";
 
 const routes: FastifyPluginAsync = async (server) => {
   server.get(

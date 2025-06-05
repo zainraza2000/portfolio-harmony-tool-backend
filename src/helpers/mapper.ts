@@ -1,5 +1,5 @@
-import { BulkImport, RawLumaData } from "./types";
-import { omitKeys } from "./utils";
+import { BulkImport, RawLumaData } from "./types.js";
+import { omitKeys } from "./utils.js";
 
 const FIELD_MAPPINGS: Partial<Record<keyof BulkImport, keyof RawLumaData>> = {
   "Rep Name": "Advisor",

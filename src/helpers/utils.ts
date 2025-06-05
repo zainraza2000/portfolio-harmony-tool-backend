@@ -1,5 +1,5 @@
 import { FastifyReply } from "fastify"
-import { ApiResponse } from "./types"
+import { ApiResponse } from "./types.js"
 
 export const omitKeys = <T extends Record<string, unknown>, K extends keyof T>(
   obj: T,

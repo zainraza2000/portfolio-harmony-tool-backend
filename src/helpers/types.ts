@@ -1,4 +1,4 @@
-import { Database } from "integrations/supabase/database.types";
+import { Database } from "../integrations/supabase/database.types.js";
 
 export type BulkImport = Omit<
   Database["public"]["Tables"]["raw_luma_data"]["Row"],

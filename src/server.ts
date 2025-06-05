@@ -2,7 +2,7 @@ import fastify from 'fastify';
 import config from './plugins/config.js';
 import routes from './routes/index.js';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
-import { apiKeyMiddleware } from 'middleware/api-key.js';
+import { apiKeyMiddleware } from './middleware/api-key.js';
 
 const server = fastify({
   ajv: {
