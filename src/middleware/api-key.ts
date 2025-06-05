@@ -12,7 +12,6 @@ export async function apiKeyMiddleware(
   if (skipRoutes.includes(request.url)) {
     return;
   }
-  console.log("AAAAAAAAAA", request.headers);
 
   const apiKey =
     request.headers[headerName] ||
