@@ -60,16 +60,16 @@ export async function handleLumaDataUpload(
     const mappedData = mapBulkImportToRawData(jsonData);
 
     await insertInBatches(mappedData);
-    const { error } = await supabase.rpc("process_raw_luma_update_batch");
-    if (error) {
-      console.log(
-        `Inserted records but failed to process them. ${JSON.stringify(error)}`
-      );
-      return {
-        success: true,
-        message: `Inserted records but failed to process them. ${JSON.stringify(error)}`,
-      };
-    }
+    // const { error } = await supabase.rpc("process_raw_luma_update_batch");
+    // if (error) {
+    //   console.log(
+    //     `Inserted records but failed to process them. ${JSON.stringify(error)}`
+    //   );
+    //   return {
+    //     success: true,
+    //     message: `Inserted records but failed to process them. ${JSON.stringify(error)}`,
+    //   };
+    // }
     return {
       success: true,
       message: `Successfully processed records`,

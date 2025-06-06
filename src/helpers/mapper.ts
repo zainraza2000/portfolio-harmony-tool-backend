@@ -50,7 +50,10 @@ export function mapBulkImportToRawData(
     };
     UNIQUE_BULK_IMPORT_FIELDS.map((field: keyof BulkImport) => {
       const rawLumaDataKey = FIELD_MAPPINGS[field];
-      if (rawLumaDataKey) result[rawLumaDataKey] = item[field];
+      if (rawLumaDataKey)
+        result[rawLumaDataKey] = item[rawLumaDataKey]
+          ? item[rawLumaDataKey]
+          : (item[field] ?? null);
     });
     
     // Log warnings for missing critical data (only if using defaults)
