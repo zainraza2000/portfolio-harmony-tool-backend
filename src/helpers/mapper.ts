@@ -43,43 +43,44 @@ export function mapBulkImportToRawData(
         "Initial Investment (USD)",
         "Total Notional (USD)",
       ]),
-      Advisor: "",
-      "Mark To Market Price": DEFAULT_VALUES["Mark To Market Price"],
-      "Investor Holding": DEFAULT_VALUES["Investor Holding"],
-      "Current Notional (USD)": DEFAULT_VALUES["Current Notional (USD)"],
     };
     UNIQUE_BULK_IMPORT_FIELDS.map((field: keyof BulkImport) => {
       const rawLumaDataKey = FIELD_MAPPINGS[field];
-      if (rawLumaDataKey)
-        result[rawLumaDataKey] = item[rawLumaDataKey]
-          ? item[rawLumaDataKey]
-          : (item[field] ?? null);
+      if (rawLumaDataKey && !result[rawLumaDataKey]) {
+        if (item[rawLumaDataKey]) {
+          result[rawLumaDataKey] = item[rawLumaDataKey];
+        } else {
+          result[rawLumaDataKey] = item[field]
+            ? item[field]
+            : ((DEFAULT_VALUES as any)[rawLumaDataKey] ?? null);
+        }
+      }
     });
     
     // Log warnings for missing critical data (only if using defaults)
-    if (!item["Total Notional (USD)"]) {
-      console.warn(
-        `No notional value found for ${
-          result.Advisor || "unknown advisor"
-        }, using default: ${DEFAULT_VALUES["Current Notional (USD)"]}`
-      );
-    }
+    // if (!item["Total Notional (USD)"]) {
+    //   console.warn(
+    //     `No notional value found for ${
+    //       result.Advisor || "unknown advisor"
+    //     }, using default: ${DEFAULT_VALUES["Current Notional (USD)"]}`
+    //   );
+    // }
 
-    if (!item["Investor Holdings"]) {
-      console.warn(
-        `No investor holding found for ${
-          result.Advisor || "unknown advisor"
-        }, using default: ${DEFAULT_VALUES["Investor Holding"]}`
-      );
-    }
+    // if (!item["Investor Holdings"]) {
+    //   console.warn(
+    //     `No investor holding found for ${
+    //       result.Advisor || "unknown advisor"
+    //     }, using default: ${DEFAULT_VALUES["Investor Holding"]}`
+    //   );
+    // }
 
-    if (!item["Mark To Market Value"]) {
-      console.warn(
-        `No Mark To Market Price found for ${
-          result.Advisor || "unknown advisor"
-        }, using default: ${DEFAULT_VALUES["Mark To Market Price"]}`
-      );
-    }
+    // if (!item["Mark To Market Value"]) {
+    //   console.warn(
+    //     `No Mark To Market Price found for ${
+    //       result.Advisor || "unknown advisor"
+    //     }, using default: ${DEFAULT_VALUES["Mark To Market Price"]}`
+    //   );
+    // }
 
     return result;
   });
