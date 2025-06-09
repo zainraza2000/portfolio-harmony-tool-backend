@@ -11,7 +11,7 @@ async function getFileBuffer(filePath: string) {
   return data.arrayBuffer();
 }
 
-const BATCH_SIZE = 20000;
+const BATCH_SIZE = 1000;
 
 async function insertInBatches(data: RawLumaData[], batchSize = BATCH_SIZE) {
   const results = [];
