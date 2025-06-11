@@ -25,7 +25,7 @@ const DEFAULT_VALUES: Pick<
 > = {
   "Current Notional (USD)": "0",
   "Investor Holding": "0",
-  "Mark To Market Price": "100",
+  "Mark To Market Price": "1",
 } as const;
 
 export function mapBulkImportToRawData(
