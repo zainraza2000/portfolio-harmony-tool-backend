@@ -1,20 +1,23 @@
-import { FastifyReply } from "fastify"
-import { ApiResponse } from "./types.js"
+import { FastifyReply } from "fastify";
+import { ApiResponse } from "./types.js";
 
 export const omitKeys = <T extends Record<string, unknown>, K extends keyof T>(
   obj: T,
-  keysToOmit: K[],
+  keysToOmit: K[]
 ): Omit<T, K> => {
-  let finalObj = {}
+  let finalObj = {};
   Object.keys(obj).forEach((key) => {
     if (!keysToOmit.includes(key as K)) {
-      finalObj = { ...finalObj, ...{ [key]: obj[key] } }
+      finalObj = { ...finalObj, ...{ [key]: obj[key] } };
     }
-  })
-  return finalObj as Omit<T, K>
-}
+  });
+  return finalObj as Omit<T, K>;
+};
 
-export function buildResponse(reply: FastifyReply, serviceResponse: ApiResponse){
+export function buildResponse(
+  reply: FastifyReply,
+  serviceResponse: ApiResponse
+) {
   if (serviceResponse.success)
     return reply
       .code(serviceResponse?.code ?? 200)
@@ -22,4 +25,14 @@ export function buildResponse(reply: FastifyReply, serviceResponse: ApiResponse)
   return reply
     .code(serviceResponse?.code ?? 500)
     .send(omitKeys({ ...serviceResponse }, ["code"]));
+}
+
+export function writeProgressResponse(
+  reply: FastifyReply,
+  progress: number,
+  meta: any
+) {
+  if (progress > 100) progress = 100;
+  reply.raw.write(`${JSON.stringify({ progress, ...meta })}`);
+  reply.raw.write("\n\n");
 }

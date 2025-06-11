@@ -24,9 +24,15 @@ const routes: FastifyPluginAsync = async (server) => {
     "/handle-luma-data-upload",
     { schema: { body: HandleLumaDataUpload } },
     async function (req, rep) {
+      rep.raw.writeHead(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Cache-Control",
+      });
       const body = req.body as Static<typeof HandleLumaDataUpload>;
-      const serviceRes = await handleLumaDataUpload(body.filePath);
-      return buildResponse(rep, serviceRes);
+      const serviceRes = await handleLumaDataUpload(req, rep, body.filePath);
     }
   );
 };
