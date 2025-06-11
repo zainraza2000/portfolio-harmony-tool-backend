@@ -3,6 +3,11 @@ import { FastifyPluginAsync } from "fastify";
 import { buildResponse } from "../helpers/utils.js";
 import { HandleLumaDataUpload } from "../schemas/handle-luma-data.js";
 import { handleLumaDataUpload } from "../services/handle-luma-data-upload.js";
+import {
+  DeleteFieldMappingParams,
+  DeleteFieldMappingResponse,
+} from "schemas/field-mappings.js";
+import { deleteFieldMapping } from "services/handle-field-mappings.js";
 
 const routes: FastifyPluginAsync = async (server) => {
   server.get(
@@ -33,6 +38,30 @@ const routes: FastifyPluginAsync = async (server) => {
       });
       const body = req.body as Static<typeof HandleLumaDataUpload>;
       const serviceRes = await handleLumaDataUpload(req, rep, body.filePath);
+    }
+  );
+
+  //field mappings
+  server.delete(
+    "/field-mappings/:fileField",
+    {
+      schema: {
+        params: DeleteFieldMappingParams,
+        response: {
+          200: DeleteFieldMappingResponse,
+          400: Type.Object({ error: Type.String() }),
+          500: Type.Object({ error: Type.String() }),
+        },
+      },
+      config: {
+        bodyLimit: 0, 
+        parseAs: "string",
+      },
+    },
+    async function (req, rep) {
+      const { fileField } = req.params as { fileField: string };
+      const serviceRes = await deleteFieldMapping(fileField);
+      return buildResponse(rep, serviceRes);
     }
   );
 };

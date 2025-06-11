@@ -2860,6 +2860,10 @@ export type Database = {
         }
         Relationships: []
       }
+        import_field_mappings: {
+        file_field?: string | null;
+        data_field?: string | null;
+      };
     }
     Views: {
       maturity_analysis: {
