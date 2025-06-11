@@ -3,7 +3,7 @@ import { mapBulkImportToRawData } from "../helpers/mapper.js";
 import { ApiResponse, BulkImport, RawLumaData } from "../helpers/types.js";
 import { supabase } from "../integrations/supabase/supabase.js";
 import * as XLSX from "xlsx";
-import { writeProgressResponse } from "helpers/utils.js";
+import { writeProgressResponse } from "../helpers/utils.js";
 
 async function getFileBuffer(filePath: string) {
   const { data, error } = await supabase.storage
