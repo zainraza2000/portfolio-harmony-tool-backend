@@ -4,10 +4,15 @@ import { buildResponse } from "../helpers/utils.js";
 import { HandleLumaDataUpload } from "../schemas/handle-luma-data.js";
 import { handleLumaDataUpload } from "../services/handle-luma-data-upload.js";
 import {
+  CreateFieldMappingBody,
+  CreateFieldMappingResponse,
   DeleteFieldMappingParams,
   DeleteFieldMappingResponse,
 } from "schemas/field-mappings.js";
-import { deleteFieldMapping } from "services/handle-field-mappings.js";
+import {
+  createFieldMapping,
+  deleteFieldMapping,
+} from "services/handle-field-mappings.js";
 
 const routes: FastifyPluginAsync = async (server) => {
   server.get(
@@ -54,13 +59,38 @@ const routes: FastifyPluginAsync = async (server) => {
         },
       },
       config: {
-        bodyLimit: 0, 
+        bodyLimit: 0,
         parseAs: "string",
       },
     },
     async function (req, rep) {
       const { fileField } = req.params as { fileField: string };
       const serviceRes = await deleteFieldMapping(fileField);
+      return buildResponse(rep, serviceRes);
+    }
+  );
+
+  server.post(
+    "/field-mappings",
+    {
+      schema: {
+        body: CreateFieldMappingBody,
+        response: {
+          200: CreateFieldMappingResponse,
+          400: Type.Object({ error: Type.String() }),
+          500: Type.Object({ error: Type.String() }),
+        },
+      },
+    },
+    async function (req, rep) {
+      const { fileField, dataField, defaultValue } = req.body as Static<
+        typeof CreateFieldMappingBody
+      >;
+      const serviceRes = await createFieldMapping(
+        fileField,
+        dataField,
+        defaultValue
+      );
       return buildResponse(rep, serviceRes);
     }
   );

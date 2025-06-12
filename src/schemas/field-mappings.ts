@@ -1,10 +1,21 @@
-import { Type } from "@sinclair/typebox";
+import { Type as T } from "@sinclair/typebox";
 
-export const DeleteFieldMappingParams = Type.Object({
-  fileField: Type.String(),
+export const DeleteFieldMappingParams = T.Object({
+  fileField: T.String(),
 });
 
-export const DeleteFieldMappingResponse = Type.Object({
-  success: Type.Boolean(),
-  message: Type.String(),
+export const DeleteFieldMappingResponse = T.Object({
+  success: T.Boolean(),
+  message: T.String(),
+});
+
+export const CreateFieldMappingBody = T.Object({
+  fileField: T.String(),
+  dataField: T.String(),
+  defaultValue: T.String(),
+});
+
+export const CreateFieldMappingResponse = T.Object({
+  success: T.Boolean(),
+  message: T.Optional(T.String()),
 });

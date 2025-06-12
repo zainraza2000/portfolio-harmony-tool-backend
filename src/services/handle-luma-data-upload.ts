@@ -92,7 +92,7 @@ export async function handleLumaDataUpload(
       message: "Mapping Fields with Database Fields",
     });
 
-    const mappedData = mapBulkImportToRawData(jsonData);
+    const mappedData = await mapBulkImportToRawData(jsonData);
 
     progress += 10;
     writeProgressResponse(rep, progress, {
