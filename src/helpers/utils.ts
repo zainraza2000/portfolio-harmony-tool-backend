@@ -27,12 +27,21 @@ export function buildResponse(
     .send(omitKeys({ ...serviceResponse }, ["code"]));
 }
 
+export function writeRawResponse(
+  reply: FastifyReply,
+  success: boolean,
+  message: string,
+  data?: any
+) {
+  reply.raw.write(JSON.stringify({ success, message, data }));
+  reply.raw.write("\n\n");
+}
+
 export function writeProgressResponse(
   reply: FastifyReply,
   progress: number,
-  meta: any
+  meta?: any
 ) {
   if (progress > 100) progress = 100;
-  reply.raw.write(`${JSON.stringify({ progress, ...meta })}`);
-  reply.raw.write("\n\n");
+  writeRawResponse(reply, true, "progress", { progress, ...meta });
 }
