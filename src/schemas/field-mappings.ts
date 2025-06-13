@@ -12,7 +12,6 @@ export const DeleteFieldMappingResponse = T.Object({
 export const CreateFieldMappingBody = T.Object({
   fileField: T.String(),
   dataField: T.String(),
-  defaultValue: T.String(),
 });
 
 export const CreateFieldMappingResponse = T.Object({

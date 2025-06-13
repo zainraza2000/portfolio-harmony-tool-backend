@@ -13,6 +13,8 @@ import {
   createFieldMapping,
   deleteFieldMapping,
 } from "services/handle-field-mappings.js";
+import { CreateDefaultValuesBody, CreateDefaultValuesResponse, DeleteDefaultValuesParams } from "schemas/default-values.js";
+import { createDefaultValues, deleteDefaultValues } from "services/handle-default-values.js";
 
 const routes: FastifyPluginAsync = async (server) => {
   server.get(
@@ -83,13 +85,61 @@ const routes: FastifyPluginAsync = async (server) => {
       },
     },
     async function (req, rep) {
-      const { fileField, dataField, defaultValue } = req.body as Static<
+      const { fileField, dataField } = req.body as Static<
         typeof CreateFieldMappingBody
       >;
       const serviceRes = await createFieldMapping(
         fileField,
         dataField,
-        defaultValue
+      );
+      return buildResponse(rep, serviceRes);
+    }
+  );
+
+
+  //default values
+   server.delete(
+    "/default-values/:defaultValue",
+    {
+      schema: {
+        params: DeleteDefaultValuesParams,
+        response: {
+          200: DeleteFieldMappingResponse,
+          400: Type.Object({ error: Type.String() }),
+          500: Type.Object({ error: Type.String() }),
+        },
+      },
+      config: {
+        bodyLimit: 0,
+        parseAs: "string",
+      },
+    },
+    async function (req, rep) {
+      const { defaultValue } = req.params as { defaultValue: string };
+      const serviceRes = await deleteDefaultValues(defaultValue);
+      return buildResponse(rep, serviceRes);
+    }
+  );
+
+  server.post(
+    "/default-values",
+    {
+      schema: {
+        body: CreateDefaultValuesBody,
+        response: {
+          200: CreateDefaultValuesResponse,
+          400: Type.Object({ error: Type.String() }),
+          500: Type.Object({ error: Type.String() }),
+        },
+      },
+    },
+    async function (req, rep) {
+      const { defaultValue, dataField } = req.body as Static<
+        typeof CreateDefaultValuesBody
+      >;
+      const serviceRes = await createDefaultValues(
+        defaultValue,
+        dataField,
       );
       return buildResponse(rep, serviceRes);
     }
