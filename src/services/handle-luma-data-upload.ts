@@ -13,7 +13,7 @@ async function getFileBuffer(filePath: string) {
   return data.arrayBuffer();
 }
 
-const BATCH_SIZE = 100000;
+const BATCH_SIZE = 5000;
 
 async function insertInBatchesWithTimedProgress(
   rep: FastifyReply,
@@ -56,7 +56,7 @@ async function insertInBatchesWithTimedProgress(
       
       // Clear the interval
       clearInterval(batchProgressInterval);
-      
+
       if (error) {
         console.error(`Error in batch ${batchNumber}:`, error);
         writeProgressResponse(rep, batchStartProgress, {
@@ -75,10 +75,7 @@ async function insertInBatchesWithTimedProgress(
       console.log(`Inserted batch ${batchNumber}/${totalBatches}`);
 
       // Timeout between batches (except for the last batch)
-      if (i + batchSize < data.length) {
-        await new Promise(resolve => setTimeout(resolve, 500)); // 500ms pause between batches
-      }
-
+      await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms pause between batches
     } catch (error) {
       clearInterval(batchProgressInterval);
       throw error;
