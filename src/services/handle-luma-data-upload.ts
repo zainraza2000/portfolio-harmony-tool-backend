@@ -13,7 +13,7 @@ async function getFileBuffer(filePath: string) {
   return data.arrayBuffer();
 }
 
-const BATCH_SIZE = 5000;
+const BATCH_SIZE = 100000;
 
 async function insertInBatchesWithTimedProgress(
   rep: FastifyReply,
