@@ -53,7 +53,7 @@ async function insertInBatchesWithTimedProgress(
     try {
       // Perform the actual insert
       const { error } = await supabase.from("raw_luma_data").insert(batch);
-      
+
       // Clear the interval
       clearInterval(batchProgressInterval);
 
@@ -75,7 +75,7 @@ async function insertInBatchesWithTimedProgress(
       console.log(`Inserted batch ${batchNumber}/${totalBatches}`);
 
       // Timeout between batches (except for the last batch)
-      await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms pause between batches
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // 500ms pause between batches
     } catch (error) {
       clearInterval(batchProgressInterval);
       throw error;
